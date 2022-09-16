@@ -15,8 +15,7 @@ export class AutorsService {
     const userExist = await this.autorRepository.findOneBy({name:createAutorDto.name});
     if (userExist)
       throw new BadRequestException('El autor ya existe');
-    
-    
+        
     const newAutor = this.autorRepository.create(createAutorDto);
     const autor = await this.autorRepository.save(newAutor);   
     
@@ -36,9 +35,6 @@ export class AutorsService {
     return autor;
   }
 
-  update(id: number, updateAutorDto: UpdateAutorDto) {
-    return `This action updates a #${id} autor`;
-  }
 
   async remove(id: number) {
     const userExist = await this.autorRepository.findOneBy({id:id});

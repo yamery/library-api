@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ApiTags } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
-import { ShowBookDto } from './dto/update-book.dto';
+import { ShowBookDto } from './dto/show-book.dto';
 @ApiTags('books')
 @Controller('books')
 export class BooksController {
@@ -10,8 +10,7 @@ export class BooksController {
 
   
   @Post()
-  async create(@Body() createBookDto: CreateBookDto) {
-    console.log(createBookDto)
+  async create(@Body() createBookDto: CreateBookDto) {    
     return await this.booksService.create(createBookDto);
   }
 
@@ -21,22 +20,27 @@ export class BooksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.booksService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const bookExist = await this.booksService.findOne(+id);
+    let res:ShowBookDto={
+      titulo:bookExist.titulo,
+      year:bookExist.year,
+      genre:bookExist.genre,
+      pages:bookExist.pages,
+      nameAutor:bookExist.autor.name
+    };
+    return res;
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: ShowBookDto) {
-    return this.booksService.update(+id, updateBookDto);
-  }
+
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.booksService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.booksService.remove(+id);
   }
 
   @Delete('autor/:id')
-  removeByAutor(@Param('id') id: string) {
-    return this.booksService.removeByAutor(+id);
+  async removeByAutor(@Param('id') id: string) {
+    return await this.booksService.removeByAutor(+id);
   }
 }

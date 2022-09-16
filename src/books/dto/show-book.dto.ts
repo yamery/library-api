@@ -1,15 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsString } from "class-validator";
 
-export class CreateBookDto {
 
+export class ShowBookDto{
+    
     @ApiProperty({
         type:String,
         description:'Titulo del libro',
         default:''
     })
     @IsString()
-    @IsNotEmpty()   
+    @IsNotEmpty()
+    @IsString()
     titulo: string;
 
     @ApiProperty({
@@ -18,7 +20,8 @@ export class CreateBookDto {
         default:''
     })
     @IsString()
-    @IsNotEmpty()    
+    @IsNotEmpty()
+    @IsString()
     year: string;
 
     @ApiProperty({
@@ -27,29 +30,26 @@ export class CreateBookDto {
         default:''
     })
     @IsString()
-    @IsNotEmpty()    
+    @IsNotEmpty()
+    @IsString()
     genre: string;
 
     @ApiProperty({
-        type:String,
+        type:Number,
         description:'Paginas del libro',
         default:''
-    })
-    @IsString()
-    @IsNotEmpty()    
-    pages: string;
+    })    
+    @IsNotEmpty()
+    @IsInt()
+    pages: Number;
 
     @ApiProperty({
         type:String,
-        description:'Identificador del autor del libro',
+        description:'Nombre del autor del libro',
         default:''
     })
     @IsString()
     @IsNotEmpty()
-    autorID: string;
- 
-
-
-
-    
+    @IsString()
+    nameAutor: string;
 }

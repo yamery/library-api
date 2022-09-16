@@ -32,10 +32,7 @@ export class AutorsController {
     return this.autorsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAutorDto: UpdateAutorDto) {
-    return this.autorsService.update(+id, updateAutorDto);
-  }
+
 
   @ApiOkResponse({description:"El autor se elimino satisfactoriamente"})
   @ApiForbiddenResponse({description:'forbidden.'})

@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Autor } from 'src/autors/entities/autor.entity';
 import { Repository } from 'typeorm';
 
+
 import { CreateBookDto } from './dto/create-book.dto';
-import { ShowBookDto } from './dto/update-book.dto';
+
+
 import { Book } from './entities/book.entity';
 
 @Injectable()
@@ -14,9 +16,7 @@ export class BooksService {
   private bookRepository: Repository<Book>,@InjectRepository(Autor)
   private readonly autorRepository: Repository<Autor>){}
 
-  async create(createBookDto: CreateBookDto) {
-
-    
+  async create(createBookDto: CreateBookDto) {    
     const autorExist = await this.autorRepository.findOneBy({id:parseInt(createBookDto.autorID,10)});
     if (!autorExist)
       throw new BadRequestException('El autor no está registrado');
@@ -35,16 +35,23 @@ export class BooksService {
     return await this.bookRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  async findOne(id: number) {    
+    const bookExist = await this.bookRepository.findOne({where:{id:id},relations:['autor']});
+    if (!bookExist)
+      throw new BadRequestException('No se encontro un libro con el id:'+id);
+    
+  
+    
+    return bookExist;
   }
 
-  update(id: number, updateBookDto: ShowBookDto) {
-    return `This action updates a #${id} book`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async remove(id: number) {
+    const bookExist = await this.bookRepository.findOneBy({id:id});
+    if (!bookExist)
+      throw new BadRequestException('No se encontro un libro con el id:'+id);
+
+    return await this.bookRepository.delete(id);
   }
 
   async removeByAutor(id: number) {
@@ -52,7 +59,7 @@ export class BooksService {
     if (books.length===0) {
       throw new NotFoundException(`No se encontro ningun libro del autor de id:`+id);
     }
-    console.log(books);
+    
     return this.bookRepository.remove(books);
   
   }
