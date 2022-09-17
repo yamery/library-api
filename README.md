@@ -1,3 +1,14 @@
+## Base de datos oracle
+
+<p >Para la configuracion de la conexion de base de datos, debe tener las siguiente configuracion:
+<br><br>
+      "host": "localhost",<br>
+      "port": 1521,<br>
+      "username": "librero",<br>
+      "password": "adminlibrary",<br>
+      "sid": "xe",</p>
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
