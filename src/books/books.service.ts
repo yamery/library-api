@@ -17,13 +17,14 @@ export class BooksService {
   private readonly autorRepository: Repository<Autor>){}
 
   async create(createBookDto: CreateBookDto) {    
-    const autorExist = await this.autorRepository.findOneBy({id:parseInt(createBookDto.autorID,10)});
+    const autorExist = await this.autorRepository.findOne({where:{id:parseInt(createBookDto.autorID)},relations:['books']});
     if (!autorExist)
       throw new BadRequestException('El autor no está registrado');
     
-    if(autorExist.books)
-      if(autorExist.books.length>10)
-        throw new BadRequestException('No es posible registrar el libro, se alcanzó el máximo permitido.');
+
+    const books= await this.bookRepository.find({where:{autor:{id:parseInt(createBookDto.autorID)}}})
+    if(books.length>=10)
+      throw new BadRequestException('No es posible registrar el libro, se alcanzó el máximo permitido.');
     
     const newBook =await this.bookRepository.create(createBookDto);    
     newBook.autor=autorExist;

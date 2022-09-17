@@ -1,6 +1,6 @@
 import { Book } from "src/books/entities/book.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
- 
+
 @Entity()
 export class Autor {
 
